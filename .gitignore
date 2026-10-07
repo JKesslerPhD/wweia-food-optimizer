@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+venv/
+# raw inputs for the pipeline (public, but large: download them, see pipeline/README.md)
+data/*.xpt
+data/faps_*.csv
+data/foodaps.zip
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm

@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Backpacking Food Optimizer</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2d4a3e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Trail Optimizer">
+<link rel="apple-touch-icon" href="static/icon-192.svg">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest:      #2d4a3e;
+  --forest-mid:  #3d6454;
+  --forest-dark: #1a2e26;
+  --peach:       #e87d5a;
+  --peach-dark:  #c8603e;
+  --peach-bg:    rgba(232,125,90,.10);
+  --cream:       #faf8f4;
+  --cream-mid:   #f3ede3;
+  --cream-dark:  #ece4d8;
+  --text:        #1c1c1c;
+  --text-mid:    #4a4540;
+  --text-light:  #888;
+  --border:      #e3d9cc;
+  --white:       #fff;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --r:    8px;
+  --r-lg: 14px;
+  --sh-sm: 0 2px 8px rgba(0,0,0,.06);
+}
+*,*::before,*::after { box-sizing: border-box; }
+body { background: var(--cream); font-family: var(--sans); font-size: .875rem; color: var(--text); margin: 0; }
+h1,h2,h3,h4,h5,h6,.fw-bold { font-family: var(--serif); }
+
+/* ── App shell ──────────────────────────────────────────────── */
+.app-wrap { max-width: 1100px; margin: 0 auto; }
+
+/* ── Header ────────────────────────────────────────────────── */
+.app-header {
+  background: var(--forest);
+  color: var(--white);
+  padding: .5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .75rem;
+}
+.app-brand { display: flex; align-items: baseline; gap: .55rem; flex-wrap: wrap; }
+.app-title { font-family: var(--serif); font-weight: 700; font-size: .95rem; white-space: nowrap; }
+.app-stats { font-size: .65rem; color: rgba(255,255,255,.5); }
+.app-nav { display: flex; align-items: center; gap: .65rem; flex-shrink: 0; }
+.app-about-link { color: rgba(255,255,255,.75); font-size: .8rem; text-decoration: none; white-space: nowrap; }
+.app-about-link:hover { color: var(--white); }
+
+/* ── Settings strip ─────────────────────────────────────────── */
+.settings-strip {
+  background: var(--white);
+  border-bottom: 2px solid var(--border);
+  padding: .65rem 1rem .5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+/* Row: core params */
+.params-row {
+  display: flex;
+  gap: .65rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.param-item { display: flex; flex-direction: column; gap: .12rem; }
+.param-label {
+  font-size: .6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text-light);
+}
+
+.s-divider { height: 1px; background: var(--border); margin: .05rem 0; }
+
+/* Row: profile + toggles */
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.row-lbl {
+  font-size: .6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+/* Profile buttons */
+.profile-btns { display: flex; gap: .22rem; flex-wrap: wrap; }
+.profile-btn { font-size: .72rem; padding: .13rem .58rem; border-radius: 999px; }
+.btn-outline-success.profile-btn { border-color: var(--forest); color: var(--forest); }
+.btn-outline-success.profile-btn.active { background: var(--forest); border-color: var(--forest); color: white; }
+.btn-outline-warning.profile-btn { border-color: #d18f28; color: #8a6d2f; }
+.btn-outline-warning.profile-btn.active { background: #d18f28; border-color: #d18f28; color: white; }
+.btn-outline-secondary.profile-btn { border-color: var(--text-mid); color: var(--text-mid); }
+.btn-outline-secondary.profile-btn.active { background: var(--text-mid); border-color: var(--text-mid); color: white; }
+.btn-outline-primary.profile-btn { border-color: var(--peach); color: var(--peach-dark); }
+.btn-outline-primary.profile-btn.active { background: var(--peach); border-color: var(--peach); color: white; }
+
+/* Inline toggles */
+.toggle-grp { display: flex; gap: .45rem; flex-wrap: wrap; align-items: center; }
+.toggle-chk { display: flex; align-items: center; gap: .28rem; font-size: .78rem; cursor: pointer; user-select: none; }
+.toggle-chk input[type="checkbox"] { width: 13px; height: 13px; cursor: pointer; accent-color: var(--forest); flex-shrink: 0; }
+
+/* Sliders inline */
+.slider-compact { display: flex; align-items: center; gap: .3rem; }
+.slider-compact .form-range { width: 80px; }
+.slider-val-sm { font-size: .7rem; font-weight: 600; color: var(--peach-dark); white-space: nowrap; min-width: 38px; }
+
+/* Custom nutrient sliders */
+.custom-sliders-panel {
+  border-top: 1px solid var(--border);
+  padding-top: .5rem;
+}
+.slider-label { font-size: .75rem; min-width: 96px; }
+.slider-val { font-size: .75rem; font-weight: 600; color: var(--peach-dark); min-width: 52px; text-align: right; }
+
+/* More options */
+.more-options-panel {
+  border-top: 1px solid var(--border);
+  padding-top: .5rem;
+}
+
+/* ── Action bar ─────────────────────────────────────────────── */
+.action-bar {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .5rem 1rem;
+  background: var(--cream-mid);
+  border-bottom: 1px solid var(--border);
+}
+.btn-run {
+  flex: 1;
+  background: var(--forest);
+  border: none;
+  color: white;
+  padding: .45rem .9rem;
+  font-size: .9rem;
+  font-weight: 600;
+  font-family: var(--serif);
+  border-radius: var(--r);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  transition: background 200ms;
+}
+.btn-run:hover:not(:disabled) { background: var(--forest-mid); }
+.btn-run:disabled { opacity: .65; cursor: not-allowed; }
+
+/* ── Browse panel ───────────────────────────────────────────── */
+.browse-panel {
+  background: var(--white);
+  border-bottom: 2px solid var(--border);
+  padding: .6rem 1rem;
+}
+.browse-table-wrap { max-height: 32vh; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--r); }
+
+/* ── Results area ───────────────────────────────────────────── */
+.results-area { padding: .75rem 1rem; }
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  color: var(--text-light);
+  font-size: .9rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* ── Basket card ────────────────────────────────────────────── */
+.basket-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--forest);
+  border-radius: var(--r-lg);
+  padding: .85rem 1rem;
+  margin-bottom: .75rem;
+  box-shadow: var(--sh-sm);
+}
+.basket-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .5rem;
+  margin: .6rem 0 .4rem;
+}
+.metric-tile {
+  background: var(--cream-mid);
+  border-radius: var(--r);
+  padding: .5rem .65rem;
+}
+.metric-tile .metric-val { font-size: 1.05rem; font-weight: 700; font-family: var(--serif); line-height: 1.15; }
+.metric-tile .metric-sub { font-size: .65rem; color: var(--text-mid); margin-top: .1rem; }
+.metric-tile .metric-lbl { font-size: .58rem; color: var(--text-light); text-transform: uppercase; letter-spacing: .04em; margin-top: .15rem; font-weight: 600; }
+.metric-tile.cost .metric-val { color: var(--forest); }
+
+/* ── Result card ────────────────────────────────────────────── */
+.result-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--peach);
+  border-radius: var(--r-lg);
+  padding: .85rem 1rem;
+  margin-bottom: .75rem;
+  box-shadow: var(--sh-sm);
+}
+
+/* ── Tags & badges ──────────────────────────────────────────── */
+.tag { font-size: .6rem; padding: 1px 4px; border-radius: 3px; color: white; margin-left: 2px; vertical-align: middle; display: inline-block; }
+.tag-nc { background: var(--forest-mid); }
+.tag-ss { background: var(--forest); }
+.tag-cs { background: var(--peach-dark); }
+.tag-gr { background: var(--forest-mid); }
+.tag-ru { background: var(--text-mid); }
+.tag-rp { background: var(--peach); }
+
+.peri-badge { font-size: .62rem; padding: 1px 5px; border-radius: 3px; margin-left: 3px; vertical-align: middle; display: inline-block; font-weight: 600; }
+.peri-red    { background: #fdecea; color: #c0392b; border: 1px solid #e5a39a; }
+.peri-yellow { background: #fff8e1; color: #8a6d2f; border: 1px solid #e5c97a; }
+.peri-green  { background: #eaf4f0; color: var(--forest); border: 1px solid #a8ccbb; }
+
+/* ── Food table ─────────────────────────────────────────────── */
+.food-row:hover td { background: var(--peach-bg); }
+.food-row { cursor: default; }
+.qty-cell { cursor: pointer; white-space: nowrap; }
+.qty-cell:hover .qty-val { text-decoration: underline dotted; color: var(--peach-dark); }
+.qty-custom { color: var(--peach-dark) !important; }
+.food-cat-tag { font-size: .68rem; color: var(--text-light); margin-top: 1px; }
+
+/* ── Nutrient bars ──────────────────────────────────────────── */
+.nutrient-bar { height: 5px; border-radius: 3px; background: var(--cream-dark); overflow: hidden; margin-top: 2px; }
+.nfill { height: 100%; border-radius: 3px; transition: width .4s; }
+.fill-good { background: var(--forest-mid); }
+.fill-warn { background: #d18f28; }
+.fill-low  { background: #bb5236; }
+
+/* ── Bootstrap overrides ────────────────────────────────────── */
+.card { border: 1px solid var(--border); box-shadow: var(--sh-sm); border-radius: var(--r-lg); background: var(--white); }
+.table-light { background: var(--cream-mid) !important; }
+.btn-primary { background: var(--peach); border-color: var(--peach); color: var(--white); }
+.btn-primary:hover { background: var(--peach-dark); border-color: var(--peach-dark); color: var(--white); }
+.btn-success { background: var(--forest); border-color: var(--forest); color: var(--white); }
+.btn-success:hover { background: var(--forest-mid); border-color: var(--forest-mid); color: var(--white); }
+.btn-outline-secondary { border-color: var(--border); color: var(--text-mid); }
+.btn-outline-secondary:hover { background: var(--cream-mid); border-color: var(--border); color: var(--text); }
+.btn-check:checked + .btn-outline-secondary { background: var(--forest); border-color: var(--forest); color: var(--white); }
+.badge.bg-success { background: var(--forest) !important; }
+.badge.bg-secondary { background: var(--text-mid) !important; }
+.text-success { color: var(--forest) !important; }
+.alert-warning { background: #fdf6e3; border-color: #e5c97a; color: #8a6d2f; }
+.form-range::-webkit-slider-thumb { background: var(--peach); }
+.form-range::-moz-range-thumb { background: var(--peach); }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.app-footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: .75rem;
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+  margin-top: .5rem;
+}
+.app-footer a { color: var(--forest); text-decoration: none; font-weight: 500; }
+
+/* ── Loading overlay ────────────────────────────────────────── */
+#spinnerOverlay { display: none; }
+#loading { display: none; }
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .app-header { flex-wrap: wrap; }
+  .app-stats { display: none; }
+  .basket-metrics { grid-template-columns: 1fr 1fr; }
+  .params-row { gap: .4rem; }
+  .settings-strip { padding: .5rem .65rem .4rem; }
+  .action-bar { padding: .45rem .65rem; }
+  .results-area { padding: .6rem .65rem; }
+}
+</style>
+</head>
+<body>
+<div class="app-wrap">
+
+<!-- ── Header ─────────────────────────────────────────────── -->
+<header class="app-header">
+  <div class="app-brand">
+    <span class="app-title">Backpacking Food Optimizer</span>
+    <span id="statsBar" class="app-stats"></span>
+  </div>
+  <div class="app-nav">
+    <div class="btn-group btn-group-sm">
+      <input type="radio" class="btn-check" name="unitSys" id="unitMetric" autocomplete="off" checked onchange="setUnits('metric')">
+      <label class="btn btn-outline-secondary" for="unitMetric" style="color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.3)">Metric</label>
+      <input type="radio" class="btn-check" name="unitSys" id="unitImperial" autocomplete="off" onchange="setUnits('imperial')">
+      <label class="btn btn-outline-secondary" for="unitImperial" style="color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.3)">Imperial</label>
+    </div>
+    <a href="methodology" class="app-about-link">About</a>
+  </div>
+</header>
+
+<!-- ── Settings strip ─────────────────────────────────────── -->
+<div class="settings-strip">
+
+  <!-- Row 1: Core params -->
+  <div class="params-row">
+    <div class="param-item">
+      <label class="param-label" for="daysOfFood">Days</label>
+      <input type="number" id="daysOfFood" class="form-control form-control-sm" value="4" min="1" max="90" step="1" style="width:66px">
+    </div>
+    <div class="param-item">
+      <label class="param-label" for="calPerDay">kcal / day</label>
+      <input type="number" id="calPerDay" class="form-control form-control-sm" value="2000" min="500" max="10000" step="100" style="width:88px">
+    </div>
+    <div class="param-item">
+      <label class="param-label" for="optStore">Store</label>
+      <select id="optStore" class="form-select form-select-sm" style="width:130px">
+        <option value="grocery">Grocery</option>
+        <option value="rural">Rural</option>
+        <option value="convenience">Convenience</option>
+        <option value="">Any Store</option>
+      </select>
+    </div>
+    <div class="param-item">
+      <label class="param-label" for="objective">Goal</label>
+      <select id="objective" class="form-select form-select-sm" style="width:148px">
+        <option value="calorie_density">Lightest Pack</option>
+        <option value="cost">Lowest Cost</option>
+        <option value="diversity">Most Diverse</option>
+        <option value="protein_g">Max Protein</option>
+        <option value="fiber_g">Max Fiber</option>
+        <option value="vitamin_c_mg">Max Vitamin C</option>
+        <option value="iron_mg">Max Iron</option>
+        <option value="vitamin_d_ug">Max Vitamin D</option>
+      </select>
+    </div>
+    <div class="param-item">
+      <label class="param-label">Body weight</label>
+      <div class="d-flex gap-1 align-items-center">
+        <div class="input-group input-group-sm" style="width:105px">
+          <input type="number" id="weightKg" class="form-control" value="70" min="30" max="700" step="1">
+          <span class="input-group-text" id="weightUnit">kg</span>
+        </div>
+        <small class="text-muted" style="font-size:.6rem;line-height:1.2">protein<br>target</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="s-divider"></div>
+
+  <!-- Row 2: Profile + Toggles -->
+  <div class="settings-row">
+    <span class="row-lbl">Profile</span>
+    <div class="profile-btns">
+      <button class="btn btn-sm btn-outline-success profile-btn active" id="prof_optimal" onclick="setProfile('optimal')">Optimal</button>
+      <button class="btn btn-sm btn-outline-warning profile-btn" id="prof_reduced" onclick="setProfile('reduced')">Reduced</button>
+      <button class="btn btn-sm btn-outline-secondary profile-btn" id="prof_none" onclick="setProfile('none')">No Constraints</button>
+      <button class="btn btn-sm btn-outline-primary profile-btn" id="prof_custom" onclick="setProfile('custom')">Custom</button>
+    </div>
+    <div class="toggle-grp" style="margin-left:.25rem">
+      <label class="toggle-chk"><input type="checkbox" id="optNoCook" checked> No-cook</label>
+      <label class="toggle-chk"><input type="checkbox" id="optShelfStable" checked> Shelf-stable</label>
+      <label class="toggle-chk"><input type="checkbox" id="optNoChocolate"> No chocolate</label>
+    </div>
+  </div>
+
+  <!-- Row 3: Sliders + Diet -->
+  <div class="settings-row">
+    <span class="row-lbl">Diversity</span>
+    <div class="slider-compact">
+      <input type="range" class="form-range" id="diversitySlider" min="0" max="1" step="0.1" value="0.3" oninput="updateDiversityLabel()">
+      <span id="diversityLabel" class="slider-val-sm">Low</span>
+    </div>
+    <span class="row-lbl" style="margin-left:.35rem">Candy</span>
+    <div class="slider-compact">
+      <input type="range" class="form-range" id="candySlider" min="0" max="1" step="0.1" value="0" oninput="updateCandyLabel()">
+      <span id="candyLabel" class="slider-val-sm">None</span>
+    </div>
+    <div class="d-flex align-items-center gap-1 ms-1" style="flex-wrap:wrap">
+      <label class="param-label mb-0">Max/item</label>
+      <input type="number" id="maxItemWt" class="form-control form-control-sm" value="340" min="28" max="5700" step="10" style="width:60px">
+      <span id="maxItemUnit" class="small text-muted">g</span>
+    </div>
+  </div>
+
+  <!-- Row 4: Diet restrictions -->
+  <div class="settings-row">
+    <span class="row-lbl">Diet</span>
+    <div class="toggle-grp">
+      <label class="toggle-chk"><input type="checkbox" id="dietVegan"> Vegan</label>
+      <label class="toggle-chk"><input type="checkbox" id="dietVegetarian"> Vegetarian</label>
+      <label class="toggle-chk"><input type="checkbox" id="dietDairyFree"> Dairy-Free</label>
+      <label class="toggle-chk"><input type="checkbox" id="dietGlutenFree"> Gluten-Free</label>
+      <label class="toggle-chk"><input type="checkbox" id="dietNutFree"> Nut-Free</label>
+      <label class="toggle-chk"><input type="checkbox" id="dietShellfishFree"> Shellfish-Free</label>
+    </div>
+  </div>
+
+  <!-- Custom nutrient sliders (shown when Custom profile selected) -->
+  <div id="customSliders" style="display:none" class="custom-sliders-panel">
+    <div class="small text-muted mb-2" style="font-size:.73rem">% of DRI minimum per nutrient:</div>
+    <div id="sliderContainer" class="row g-1"></div>
+  </div>
+
+</div><!-- /settings-strip -->
+
+<!-- ── Action bar ──────────────────────────────────────────── -->
+<div class="action-bar">
+  <button id="browseToggleBtn" class="btn btn-sm btn-outline-secondary" onclick="toggleSearch()">&#9776; Browse Foods</button>
+  <button type="button" class="btn-run" onclick="optimize()" id="optimizeBtn">
+    <span id="loading" class="spinner-border spinner-border-sm"></span>
+    Run Optimization
+  </button>
+  <button type="button" class="btn btn-sm btn-link text-muted py-0" onclick="resetConstraints()" style="font-size:.75rem;white-space:nowrap">&#8635; Reset</button>
+</div>
+
+<!-- ── Browse panel ────────────────────────────────────────── -->
+<div id="browseSection" style="display:none" class="browse-panel">
+  <div class="d-flex gap-2 mb-2 flex-wrap align-items-center">
+    <div class="input-group input-group-sm" style="max-width:280px">
+      <input type="text" id="searchInput" class="form-control" placeholder="Search (peanut butter, tuna, jerky...)">
+      <button class="btn btn-primary" onclick="searchFoods()">Search</button>
+    </div>
+    <select id="storeFilter" class="form-select form-select-sm" style="width:135px" onchange="searchFoods()">
+      <option value="grocery">Grocery</option>
+      <option value="rural">Rural</option>
+      <option value="convenience">Convenience</option>
+      <option value="">Any Store</option>
+    </select>
+    <select id="sortBy" class="form-select form-select-sm" style="width:150px" onchange="searchFoods()">
+      <option value="calorie_density">Calorie Density</option>
+      <option value="calories">Total Calories</option>
+      <option value="protein">Protein</option>
+      <option value="price">Price (low first)</option>
+      <option value="popularity">Popularity</option>
+      <option value="description">Name A-Z</option>
+    </select>
+    <label class="toggle-chk"><input type="checkbox" id="filterNoCook" checked onchange="searchFoods()"> No-cook</label>
+    <label class="toggle-chk"><input type="checkbox" id="filterShelfStable" checked onchange="searchFoods()"> Shelf-stable</label>
+    <div id="resultCount" class="text-muted ms-auto" style="font-size:.7rem"></div>
+  </div>
+  <div class="browse-table-wrap">
+    <table class="table table-sm table-hover mb-0" style="font-size:.8rem">
+      <thead class="table-light sticky-top">
+        <tr><th>Food</th><th id="browseHdrDensity" title="kcal per gram">kcal/g</th><th>kcal</th><th>$/100g</th></tr>
+      </thead>
+      <tbody id="foodTableBody">
+        <tr><td colspan="4" class="text-muted p-3">Click Search to load foods</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="pagination" class="d-flex justify-content-between align-items-center px-2 py-1"
+    style="font-size:.78rem;background:var(--cream-mid);border-top:1px solid var(--border);border-radius:0 0 var(--r) var(--r)"></div>
+</div><!-- /browseSection -->
+
+<!-- ── Results area ────────────────────────────────────────── -->
+<div id="results" class="results-area empty-state">
+  <div>
+    <strong>Configure your trip</strong><br>
+    <span class="text-muted" style="font-size:.85rem">Set days, calories, and store type, then click <strong>Run Optimization</strong>.</span>
+  </div>
+</div>
+
+<footer class="app-footer">
+  <a href="methodology">About &amp; Methodology</a>
+  &nbsp;&bull;&nbsp;
+  <a href="https://trailpeaches.com" target="_blank" rel="noopener" style="color:var(--peach-dark)">Trail Peaches</a>
+  &nbsp;&bull;&nbsp;
+  Data: NHANES/WWEIA &amp; USDA FoodAPS
+</footer>
+
+</div><!-- /app-wrap -->
+
+<script>
+const BASE = window.location.pathname.replace(/\/[^/]*$/, '') + '/';
+
+const NUTRIENTS = [
+  {k:'protein_g',       lbl:'Protein',    ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'fiber_g',         lbl:'Fiber',      ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'calcium_mg',      lbl:'Calcium',    ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'iron_mg',         lbl:'Iron',       ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'vitamin_c_mg',    lbl:'Vitamin C',  ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'vitamin_d_ug',    lbl:'Vitamin D',  ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'potassium_mg',    lbl:'Potassium',  ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'vitamin_b12_ug',  lbl:'Vitamin B12',ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'zinc_mg',         lbl:'Zinc',       ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'magnesium_mg',    lbl:'Magnesium',  ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'folate_total_ug', lbl:'Folate',     ql:['Off','25%','50%','Full DRI','150%']},
+  {k:'choline_mg',      lbl:'Choline',    ql:['Off','25%','50%','Full DRI','150%']},
+];
+const SCALES = [0, 0.25, 0.5, 1.0, 1.5];
+
+const PROFILES = {
+  optimal: {protein_g:1,fiber_g:1,calcium_mg:1,iron_mg:1,vitamin_c_mg:1,vitamin_d_ug:1,potassium_mg:0.75,vitamin_b12_ug:0.75,zinc_mg:0.75,magnesium_mg:0.75,folate_total_ug:0.75,choline_mg:0.5},
+  reduced:  {protein_g:0.5,fiber_g:0.5,calcium_mg:0.25,iron_mg:0.25,vitamin_c_mg:0.25,vitamin_d_ug:0.25,potassium_mg:0.25,vitamin_b12_ug:0,zinc_mg:0,magnesium_mg:0,folate_total_ug:0,choline_mg:0},
+  none:     {},
+  custom:   null,
+};
+
+let currentProfile = "optimal";
+let unitSystem = "metric";
+let lastOptimizeResult = null;
+let groupSimilarMode = false;
+const expandedGroups = new Set();
+const blockedFoods = new Map();
+const customQuantities = new Map();
+
+function getBaseName(desc) {
+  let base = desc.split(',')[0].toLowerCase().trim();
+  return base.replace(/\b(nfs|regular|plain)\b/gi, '').trim();
+}
+
+function computeFoodGroups(foods) {
+  const buckets = new Map();
+  foods.forEach(f => {
+    const key = getBaseName(f.description);
+    if (!buckets.has(key)) buckets.set(key, []);
+    buckets.get(key).push(f);
+  });
+  const result = [];
+  buckets.forEach((group, key) => {
+    if (group.length === 1) { result.push({ key, foods: group, merged: false }); return; }
+    const dens = group.map(f => f.calorie_density || 0).filter(d => d > 0);
+    const spread = dens.length > 1 ? Math.max(...dens) / Math.min(...dens) : 1;
+    if (spread <= 1.15) result.push({ key, foods: group, merged: true });
+    else group.forEach(f => result.push({ key: f.description.toLowerCase(), foods: [f], merged: false }));
+  });
+  return result;
+}
+
+function toggleGroup(key) {
+  if (expandedGroups.has(key)) expandedGroups.delete(key); else expandedGroups.add(key);
+  renderResults(lastOptimizeResult);
+}
+
+function toggleGroupMode() {
+  groupSimilarMode = !groupSimilarMode;
+  expandedGroups.clear();
+  renderResults(lastOptimizeResult);
+}
+
+function setUnits(sys) {
+  const prev = unitSystem;
+  unitSystem = sys;
+  const wInput = document.getElementById("weightKg");
+  const wUnit  = document.getElementById("weightUnit");
+  if (sys === "imperial") {
+    const curKg = parseFloat(wInput.value) || 70;
+    if (curKg <= 300) wInput.value = Math.round(curKg * 2.20462);
+    wInput.min = "66"; wInput.max = "660"; wInput.step = "1";
+    wUnit.textContent = "lbs";
+  } else {
+    const curVal = parseFloat(wInput.value) || 154;
+    if (curVal > 300) wInput.value = Math.round(curVal / 2.20462);
+    wInput.min = "30"; wInput.max = "300"; wInput.step = "1";
+    wUnit.textContent = "kg";
+  }
+  const mxInput = document.getElementById("maxItemWt");
+  const mxUnit  = document.getElementById("maxItemUnit");
+  const curMxG = prev === "imperial" ? (parseFloat(mxInput.value)||12) * 28.3495
+                                      : (parseFloat(mxInput.value)||340);
+  if (sys === "imperial") {
+    mxInput.value = Math.round(curMxG / 28.3495 * 2) / 2;
+    mxInput.min = "1"; mxInput.max = "200"; mxInput.step = "0.5";
+    mxUnit.textContent = "oz";
+  } else {
+    mxInput.value = Math.round(curMxG / 10) * 10;
+    mxInput.min = "28"; mxInput.max = "5700"; mxInput.step = "10";
+    mxUnit.textContent = "g";
+  }
+  const bh = document.getElementById("browseHdrDensity");
+  if (bh) bh.textContent = densityHdr();
+  if (lastOptimizeResult) renderResults(lastOptimizeResult);
+}
+
+function getWeightKg() {
+  const v = parseFloat(document.getElementById("weightKg").value) || (unitSystem === "imperial" ? 154 : 70);
+  return unitSystem === "imperial" ? v / 2.20462 : v;
+}
+
+function fmtDensity(kcalPerG) {
+  if (unitSystem === "imperial") return (kcalPerG * 28.3495).toFixed(1) + " kcal/oz";
+  return kcalPerG.toFixed(2) + " kcal/g";
+}
+function densityHdr() { return unitSystem === "imperial" ? "kcal/oz" : "kcal/g"; }
+
+function fmtWeight(grams) {
+  if (unitSystem === "imperial") {
+    const oz = grams / 28.3495;
+    if (oz >= 32) return (oz / 16).toFixed(2) + " lbs";
+    return oz.toFixed(1) + " oz";
+  }
+  if (grams >= 1000) return (grams / 1000).toFixed(2) + " kg";
+  return grams.toFixed(0) + "g";
+}
+
+function fmtTotalWeight(grams) {
+  if (unitSystem === "imperial") {
+    const lbs = grams / 453.592;
+    const oz  = grams / 28.3495;
+    return lbs.toFixed(1) + " lbs (" + oz.toFixed(0) + " oz)";
+  }
+  const kg = grams / 1000;
+  return kg.toFixed(2) + " kg (" + grams.toFixed(0) + "g)";
+}
+
+function buildSliders() {
+  const el = document.getElementById("sliderContainer");
+  el.innerHTML = NUTRIENTS.map(n => `
+    <div class="col-md-6">
+      <div class="d-flex align-items-center gap-2">
+        <span class="slider-label">${n.lbl}</span>
+        <input type="range" class="form-range flex-grow-1" id="ns_${n.k}" min="0" max="4" step="1" value="3"
+          oninput="updateSliderLabel('${n.k}',${JSON.stringify(n.ql)})">
+        <span id="nsl_${n.k}" class="slider-val">Full DRI</span>
+      </div>
+    </div>`).join("");
+}
+
+function updateSliderLabel(k, ql) {
+  const v = parseInt(document.getElementById("ns_"+k).value);
+  document.getElementById("nsl_"+k).textContent = ql[v];
+}
+
+function getNutrientScales() {
+  if (currentProfile !== "custom") return PROFILES[currentProfile] || {};
+  const scales = {};
+  NUTRIENTS.forEach(n => {
+    const v = parseInt(document.getElementById("ns_"+n.k).value);
+    scales[n.k] = SCALES[v];
+  });
+  return scales;
+}
+
+function setProfile(p) {
+  currentProfile = p;
+  document.querySelectorAll(".profile-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("prof_"+p).classList.add("active");
+  document.getElementById("customSliders").style.display = p==="custom" ? "" : "none";
+  if (p !== "custom" && PROFILES[p]) {
+    NUTRIENTS.forEach(n => {
+      const scale = PROFILES[p][n.k] || 0;
+      const idx = SCALES.findIndex(s => Math.abs(s-scale)<0.01);
+      if (document.getElementById("ns_"+n.k)) {
+        document.getElementById("ns_"+n.k).value = idx >= 0 ? idx : 3;
+        updateSliderLabel(n.k, n.ql);
+      }
+    });
+  }
+}
+
+function updateDiversityLabel() {
+  const v = parseFloat(document.getElementById("diversitySlider").value);
+  const minFoods = v <= 0.05 ? 0 : Math.min(Math.round(v * 20), 20);
+  const labels = ["None","Very Low","Low","Moderate","High","Very High","Strict","Very Strict","Near Max","Max","Extreme"];
+  const lbl = labels[Math.round(v * 10)];
+  document.getElementById("diversityLabel").textContent =
+    minFoods > 0 ? `${lbl} (≥${minFoods})` : lbl;
+}
+
+function updateCandyLabel() {
+  const v = parseFloat(document.getElementById("candySlider").value);
+  const labels = ["None","~2%","~4%","~6%","~8%","~10%","~12%","~14%","~16%","~18%","~20%"];
+  const el = document.getElementById("candyLabel");
+  el.textContent = v <= 0.01 ? "None" : `≥${labels[Math.round(v * 10)]}`;
+}
+
+function getMaxItemGrams() {
+  const v = parseFloat(document.getElementById("maxItemWt").value) || 0;
+  return unitSystem === "imperial" ? v * 28.3495 : v;
+}
+
+function toggleSearch() {
+  const browse = document.getElementById("browseSection");
+  const isOpen = browse.style.display !== "none";
+  browse.style.display = isOpen ? "none" : "";
+  const btn = document.getElementById("browseToggleBtn");
+  btn.textContent = isOpen ? "☰ Browse Foods" : "✕ Close Browse";
+  if (!isOpen) searchFoods();
+}
+
+let currentPage = 1;
+async function searchFoods(page) {
+  currentPage = page || 1;
+  const q   = encodeURIComponent(document.getElementById("searchInput").value);
+  const nc  = document.getElementById("filterNoCook").checked ? "1" : "0";
+  const ss  = document.getElementById("filterShelfStable").checked ? "1" : "0";
+  const st  = document.getElementById("storeFilter").value;
+  const srt = document.getElementById("sortBy").value;
+  const dietary = getDietaryRestrictions().join(',');
+  const res = await fetch(`${BASE}api/foods?q=${q}&no_cook=${nc}&shelf_stable=${ss}&store=${st}&sort=${srt}&page=${currentPage}&dietary=${dietary}`);
+  const d   = await res.json();
+  document.getElementById("resultCount").textContent = d.total.toLocaleString() + " foods found";
+  const tb = document.getElementById("foodTableBody");
+  if (!d.foods.length) { tb.innerHTML="<tr><td colspan=4 class='text-muted p-2'>No results</td></tr>"; return; }
+  tb.innerHTML = d.foods.map(f => {
+    const nm = f.display_name || f.faps_description || f.description;
+    let tags = "";
+    if (f.no_cook)          tags += "<span class='tag tag-nc'>no-cook</span>";
+    if (f.non_perishable||f.faps_shelf_stable) tags += "<span class='tag tag-ss'>shelf</span>";
+    if (f.bought_convenience||f.convenience_store) tags += "<span class='tag tag-cs'>conv</span>";
+    if (f.bought_supermarket||f.grocery_store) tags += "<span class='tag tag-gr'>groc</span>";
+    if (f.bought_rural||f.rural_available) tags += "<span class='tag tag-ru'>rural</span>";
+    if (f.price_per_100g_median) tags += "<span class='tag tag-rp'><b>$</b></span>";
+    const price = f.price_per_100g_median || f.est_price_per_100g || 0.5;
+    const altDesc = f.fndds_additional || f.faps_purchase_examples || '';
+    const altNote = altDesc ? `<br><small class="text-muted" style="font-size:.65rem">${altDesc}</small>` : '';
+    return `<tr class="food-row" onclick="showFood(${f.food_code})">
+      <td>${nm}${tags}${altNote}<br><small class="text-muted">${f.food_category||""}</small></td>
+      <td>${fmtDensity(f.calorie_density||0)}</td>
+      <td>${Math.round(f.energy_kcal||0)}</td>
+      <td>$${price.toFixed(2)}</td></tr>`;
+  }).join("");
+  let nav = "";
+  if (d.page>1) nav+=`<button class="btn btn-sm btn-outline-secondary" onclick="searchFoods(${d.page-1})">&#8249;</button>`;
+  else nav+="<span></span>";
+  nav+=`<small class="text-muted">Page ${d.page}/${d.pages} of ${d.total.toLocaleString()}</small>`;
+  if (d.page<d.pages) nav+=`<button class="btn btn-sm btn-outline-secondary" onclick="searchFoods(${d.page+1})">&#8250;</button>`;
+  else nav+="<span></span>";
+  document.getElementById("pagination").innerHTML=nav;
+}
+
+async function showFood(code) {
+  const res = await fetch(BASE+"api/food/"+code);
+  const {food:f} = await res.json();
+  const nm = f.display_name || f.faps_description || f.description;
+  const price = f.price_per_100g_median || f.est_price_per_100g || 0.5;
+  const priceNote = f.price_per_100g_median ? "(real FoodAPS price)" : "(estimated)";
+  let avail = [];
+  if (f.bought_rural||f.rural_available) avail.push("Rural");
+  if (f.bought_convenience||f.convenience_store) avail.push("Convenience");
+  if (f.bought_supermarket||f.grocery_store) avail.push("Grocery");
+  if (f.bought_supercenter) avail.push("Supercenter");
+  if (f.bought_dollar) avail.push("Dollar Store");
+  const rows = [["Calories","energy_kcal","kcal"],["Protein","protein_g","g"],
+    ["Carbs","carbohydrate_g","g"],["Fat","total_fat_g","g"],["Fiber","fiber_g","g"],
+    ["Sugars","total_sugars_g","g"],["Sodium","sodium_mg","mg"],["Calcium","calcium_mg","mg"],
+    ["Iron","iron_mg","mg"],["Vit C","vitamin_c_mg","mg"],["Vit D","vitamin_d_ug","ug"],
+    ["Potassium","potassium_mg","mg"],["Vit A","vitamin_a_rae_ug","ug"],["Zinc","zinc_mg","mg"],
+    ["Vit B12","vitamin_b12_ug","ug"],["Magnesium","magnesium_mg","mg"]];
+  let h = `<div class="result-card">`;
+  h += `<div class="d-flex justify-content-between mb-1">`;
+  h += `<div><strong>${nm}</strong><br><small class="text-muted">${f.food_category||""} &bull; Food code: ${f.food_code}</small></div>`;
+  h += `<div class="text-end">`;
+  h += `<span class="badge bg-success">${fmtDensity(f.calorie_density||0)}</span><br>`;
+  h += `<span class="badge bg-secondary">$${price.toFixed(2)}/100g ${priceNote}</span></div></div>`;
+  h += `<div class="mb-1" style="font-size:.78rem">Available: ${avail.join(" | ")||"unknown"}`;
+  h += ` &bull; ${(f.no_cook?"No-cook":"Requires cooking")} &bull; ${(f.non_perishable||f.faps_shelf_stable?"Shelf-stable":"Perishable")}</div>`;
+  h += `<hr class="my-2">`;
+  h += `<div class="row"><div class="col-6"><table class="table table-sm mb-0" style="font-size:.8rem">`;
+  h += `<tr><th>Nutrient</th><th>Per 100g</th></tr>`;
+  rows.slice(0,8).forEach(([l,k,u]) => h+=`<tr><td>${l}</td><td class="text-end">${(f[k]||0).toFixed(2)} ${u}</td></tr>`);
+  h += `</table></div><div class="col-6"><table class="table table-sm mb-0" style="font-size:.8rem">`;
+  h += `<tr><th>Nutrient</th><th>Per 100g</th></tr>`;
+  rows.slice(8).forEach(([l,k,u]) => h+=`<tr><td>${l}</td><td class="text-end">${(f[k]||0).toFixed(2)} ${u}</td></tr>`);
+  h += `<tr><td>Avg Portion</td><td class="text-end">${(f.avg_portion_g||0).toFixed(0)} g</td></tr>`;
+  h += `<tr><td>Survey Count</td><td class="text-end">${(f.intake_count||0).toLocaleString()}</td></tr>`;
+  if (f.price_obs) h += `<tr><td>Price Obs.</td><td class="text-end">${f.price_obs}</td></tr>`;
+  h += `</table></div></div></div>`;
+  document.getElementById("results").innerHTML = h;
+}
+
+function saveBlockedFoods() {
+  try { localStorage.setItem('wweia_blocked', JSON.stringify([...blockedFoods.entries()])); } catch(e) {}
+}
+function blockFood(code, desc) { blockedFoods.set(code, desc); saveBlockedFoods(); optimize(); }
+function unblockFood(code) { blockedFoods.delete(code); saveBlockedFoods(); optimize(); }
+function clearBlocked() { blockedFoods.clear(); saveBlockedFoods(); optimize(); }
+
+function getModifiedData(data) {
+  if (!data || customQuantities.size === 0) return data;
+  const modFoods = data.foods
+    .map(f => {
+      const cg = customQuantities.get(f.food_code);
+      if (cg === undefined) return f;
+      const ratio = cg / Math.max(f.grams, 0.001);
+      const newN = {};
+      for (const [k, v] of Object.entries(f.nutrients || {})) newN[k] = Math.round(v * ratio * 1000) / 1000;
+      return { ...f, grams: cg, kcal: Math.round(f.kcal * ratio * 10) / 10,
+        cost: Math.round(f.cost * ratio * 100) / 100,
+        purchase_label: cg.toFixed(0) + 'g', _custom: true, nutrients: newN };
+    }).filter(f => f.grams > 0);
+  let tG = 0, tKcal = 0, tCost = 0;
+  const tN = {}, cats = new Set();
+  for (const f of modFoods) {
+    tG += f.grams; tKcal += f.kcal; tCost += f.cost;
+    cats.add(f.food_category);
+    for (const [k, v] of Object.entries(f.nutrients || {})) tN[k] = (tN[k] || 0) + v;
+  }
+  const driCov = {};
+  for (const [k, d] of Object.entries(data.dri || {})) {
+    const mn = d.min;
+    driCov[k] = (mn && mn > 0) ? Math.round((tN[k] || 0) / mn * 1000) / 10 : null;
+  }
+  return {
+    ...data, foods: modFoods, num_foods: modFoods.length,
+    total_nutrients: tN, dri_coverage: driCov,
+    basket: {
+      ...data.basket,
+      total_grams: Math.round(tG * 10) / 10,
+      total_lbs: Math.round(tG / 453.592 * 100) / 100,
+      total_kg: Math.round(tG / 1000 * 100) / 100,
+      total_cost: Math.round(tCost * 100) / 100,
+      total_kcal: Math.round(tKcal * 10) / 10,
+      calorie_density: Math.round(tKcal / Math.max(tG, 1) * 1000) / 1000,
+      cost_per_1000kcal: Math.round(tCost / Math.max(tKcal / 1000, 0.001) * 100) / 100,
+      num_items: modFoods.length, num_categories: cats.size,
+      categories: [...cats].sort(),
+    },
+  };
+}
+
+function editQty(code, grams, cell) {
+  const inp = document.createElement('input');
+  inp.type = 'number'; inp.min = '0'; inp.step = '1'; inp.value = Math.round(grams);
+  inp.className = 'form-control form-control-sm d-inline-block';
+  inp.style.cssText = 'width:72px;padding:1px 4px;font-size:.8rem';
+  cell.innerHTML = ''; cell.appendChild(inp);
+  inp.focus(); inp.select();
+  let done = false;
+  function commit() {
+    if (done) return; done = true;
+    const v = parseFloat(inp.value);
+    if (!isNaN(v) && v >= 0) { customQuantities.set(code, v); optimize(); }
+    else renderResults(lastOptimizeResult);
+  }
+  inp.addEventListener('blur', commit);
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') inp.blur();
+    if (e.key === 'Escape') { done = true; renderResults(lastOptimizeResult); }
+  });
+}
+
+function clearCustomQty(code) { customQuantities.delete(code); optimize(); }
+
+function exportCSV() {
+  if (!lastOptimizeResult) return;
+  const d = lastOptimizeResult;
+  const b = d.basket;
+  const imp = unitSystem === 'imperial';
+  const wtHdr  = imp ? 'Weight (oz)' : 'Weight (g)';
+  const denHdr = imp ? 'Cal/oz' : 'Cal/g';
+  const toWt   = g => imp ? (g / 28.3495).toFixed(2) : g.toFixed(0);
+  const toDen  = cd => imp ? (cd * 28.3495).toFixed(2) : cd.toFixed(2);
+  const rows = [['Food','Category',wtHdr,'Calories',denHdr,'Protein (g)','Fiber (g)','Sodium (mg)','Est Cost ($)'].join(',')];
+  d.foods.forEach(f => rows.push([
+    `"${(f.description||'').replace(/"/g,'""')}"`,
+    `"${(f.food_category||'').replace(/"/g,'""')}"`,
+    toWt(f.grams), f.kcal.toFixed(0), toDen(f.calorie_density),
+    (f.nutrients.protein_g||0).toFixed(1), (f.nutrients.fiber_g||0).toFixed(1),
+    (f.nutrients.sodium_mg||0).toFixed(0), f.cost.toFixed(2),
+  ].join(',')));
+  rows.push(['TOTAL','',toWt(b.total_grams),b.total_kcal.toFixed(0),
+    toDen(b.calorie_density),'','','','$'+b.total_cost.toFixed(2)].join(','));
+  const blob = new Blob([rows.join('\n')], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement('a'), {href:url, download:'resupply_optimizer.csv'});
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 100);
+}
+
+function resetConstraints() {
+  blockedFoods.clear();
+  customQuantities.clear();
+  document.getElementById('optNoCook').checked = true;
+  document.getElementById('optShelfStable').checked = true;
+  document.getElementById('optNoChocolate').checked = false;
+  ['dietVegan','dietVegetarian','dietDairyFree','dietGlutenFree','dietNutFree','dietShellfishFree']
+    .forEach(id => { document.getElementById(id).checked = false; });
+  document.getElementById('optStore').value = 'grocery';
+  document.getElementById('diversitySlider').value = '0.3';
+  updateDiversityLabel();
+  document.getElementById('candySlider').value = '0';
+  updateCandyLabel();
+  const mxInput = document.getElementById('maxItemWt');
+  mxInput.value = unitSystem === 'imperial' ? '12' : '340';
+  setProfile('optimal');
+  optimize();
+}
+
+function getDietaryRestrictions() {
+  const map = {
+    dietVegan:'vegan', dietVegetarian:'vegetarian', dietDairyFree:'dairy_free',
+    dietGlutenFree:'gluten_free', dietNutFree:'nut_free', dietShellfishFree:'shellfish_free',
+  };
+  return Object.entries(map)
+    .filter(([id]) => document.getElementById(id)?.checked)
+    .map(([, val]) => val);
+}
+
+function renderResults(data) {
+  lastOptimizeResult = data;
+
+  if (["infeasible","not_solved","abnormal"].includes(data.status)) {
+    const tgt = data.cal_target ? ` Target: ${data.cal_target.lo.toLocaleString()}–${data.cal_target.hi.toLocaleString()} kcal.` : "";
+    document.getElementById("results").innerHTML =
+      `<div class="alert alert-warning"><strong>No feasible solution.</strong>${tgt} ${data.error||""}<br>
+      <small>Candidates: ${data.candidate_count||0}. Try: Reduced or No Constraints profile, switch store type, fewer days, or uncheck Shelf-Stable.</small></div>`;
+    return;
+  }
+
+  const d = getModifiedData(data);
+  const b = d.basket;
+
+  // ── Basket summary ──────────────────────────────────────────
+  let h = `<div class="basket-card">`;
+  h += `<div class="d-flex justify-content-between align-items-start">`;
+  h += `<div>`;
+  h += `<h6 class="fw-bold mb-0" style="font-family:var(--serif)">Shopping Basket</h6>`;
+  h += `<small class="text-muted">${b.days} days &bull; ${b.cal_per_day.toLocaleString()} kcal/day &bull; ${b.target_kcal.toLocaleString()} kcal target</small>`;
+  h += `</div>`;
+  h += `<button class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size:.75rem" onclick="exportCSV()">Download List</button>`;
+  h += `</div>`;
+
+  h += `<div class="basket-metrics">`;
+  h += `<div class="metric-tile cost">`;
+  h += `<div class="metric-val">$${b.total_cost.toFixed(2)}</div>`;
+  h += `<div class="metric-sub">$${b.cost_per_1000kcal.toFixed(2)} / 1000 kcal</div>`;
+  h += `<div class="metric-lbl">Total Cost</div>`;
+  h += `</div>`;
+  h += `<div class="metric-tile">`;
+  h += `<div class="metric-val">${fmtTotalWeight(b.total_grams)}</div>`;
+  h += `<div class="metric-sub">${fmtDensity(b.calorie_density)} avg</div>`;
+  h += `<div class="metric-lbl">Pack Weight</div>`;
+  h += `</div>`;
+  h += `<div class="metric-tile">`;
+  h += `<div class="metric-val">${b.total_kcal.toLocaleString()}</div>`;
+  h += `<div class="metric-sub">${b.num_items} foods &bull; ${b.num_categories} cat.</div>`;
+  h += `<div class="metric-lbl">Total kcal</div>`;
+  h += `</div>`;
+  h += `</div>`;
+
+  const periParts = [];
+  if (b.nonperishable_items > 0) periParts.push(`<span class="peri-badge peri-green">${b.nonperishable_items} shelf-stable</span>`);
+  if (b.perishable_items > 0)    periParts.push(`<span class="peri-badge peri-red">${b.perishable_items} perishable</span>`);
+  if (periParts.length) h += `<div style="font-size:.75rem" class="mb-1">${periParts.join(" ")} &bull; avg ${b.avg_food_safe_days} days</div>`;
+  h += `<div style="font-size:.73rem" class="text-muted">Categories: ${b.categories.join(" &bull; ")}</div>`;
+
+  if (blockedFoods.size > 0) {
+    h += `<div class="mt-2 pt-2 border-top" style="font-size:.75rem">`;
+    h += `<span class="text-muted me-1">Excluded:</span>`;
+    blockedFoods.forEach((desc, code) => {
+      h += `<span class="badge bg-danger me-1" style="font-weight:normal;cursor:pointer" onclick="unblockFood(${code})" title="Click to restore">${desc} ✕</span>`;
+    });
+    h += `<button class="btn btn-outline-danger btn-sm py-0 px-1 ms-1" style="font-size:.7rem" onclick="clearBlocked()">Clear all</button>`;
+    h += `</div>`;
+  }
+  h += `</div>`;
+
+  // ── Food list table ─────────────────────────────────────────
+  h += `<div class="result-card">`;
+  const minFoodNote = data.min_foods_required > 0 ? `, ≥${data.min_foods_required} required` : '';
+  const solverNote  = data.solver_used === 'SCIP' ? ' · MIP' : '';
+  h += `<div class="d-flex justify-content-between align-items-center mb-1">`;
+  h += `<h6 class="fw-bold mb-0" style="font-family:var(--serif)">${d.num_foods} Foods Selected <small class="fw-normal text-muted" style="font-size:.8rem">(${data.status}${solverNote}, from ${data.candidate_count} candidates${minFoodNote})</small></h6>`;
+  h += `</div>`;
+
+  if (data.relaxed_nutrients && data.relaxed_nutrients.length > 0) {
+    const rnames = data.relaxed_nutrients.map(n => (data.dri[n] ? data.dri[n].label : n)).join(", ");
+    h += `<div class="alert alert-warning py-1 px-2 mb-2" style="font-size:.78rem">Nutrient constraints relaxed: <strong>${rnames}</strong></div>`;
+  }
+  if (customQuantities.size > 0) {
+    h += `<div class="d-flex align-items-center gap-2 mb-2" style="font-size:.75rem">`;
+    h += `<span class="text-warning fw-semibold">&#9998; ${customQuantities.size} custom quantity override${customQuantities.size>1?'s':''}</span>`;
+    h += `<button class="btn btn-outline-secondary btn-sm py-0 px-1" style="font-size:.7rem" onclick="customQuantities.clear();optimize()">Clear all</button>`;
+    h += `</div>`;
+  }
+
+  const wtHdr = unitSystem === "imperial" ? "Weight" : "Grams";
+  h += `<div class="table-responsive"><table class="table table-sm table-hover mb-0" style="font-size:.82rem">`;
+  h += `<thead class="table-light"><tr><th>Food</th><th title="Click to adjust">Purchase ✎</th><th>${wtHdr}</th><th>kcal</th><th>Protein</th><th>Cost</th><th></th></tr></thead><tbody>`;
+
+  function renderFoodRow(f, isSubRow) {
+    const rp = f.has_real_price ? "<span class='tag tag-rp'><b>$</b></span>" : "";
+    const ru = f.bought_rural ? "<span class='tag tag-ru'>rural</span>" : "";
+    const sd = f.days_without_refrigeration;
+    let pb = "";
+    if (sd === null || sd === undefined) pb = "";
+    else if (sd === 0) pb = `<span class='peri-badge peri-red' title='${f.stability_tier||"Perishable"}'>0d</span>`;
+    else if (sd <= 3)  pb = `<span class='peri-badge peri-yellow' title='${f.stability_tier||""}'>${sd}d</span>`;
+    else               pb = `<span class='peri-badge peri-green' title='${f.stability_tier||""}'>${sd >= 14 ? "14+d" : sd+"d"}</span>`;
+    const gramLabel = f.purchase_label || (f.grams.toFixed(0)+"g");
+    const descEsc = f.description.replace(/'/g, "\\'");
+    const altSub = (f.fndds_additional || f.purchase_examples || '');
+    const capG = customQuantities.get(f.food_code);
+    const editStartG = capG !== undefined ? capG : f.grams;
+    const rowStyle = isSubRow ? ' style="background:#f8f6f2;border-left:3px solid var(--forest-mid)"' : '';
+
+    let r = `<tr class="food-row"${rowStyle}>`;
+    r += `<td style="${isSubRow ? 'padding-left:1.2rem' : ''}">`;
+    r += `<div>${f.description}${pb}${rp}${ru}</div>`;
+    if (altSub) r += `<div class="food-cat-tag">${f.food_category} &mdash; ${altSub}</div>`;
+    else        r += `<div class="food-cat-tag">${f.food_category}</div>`;
+    r += `</td>`;
+    r += `<td class="qty-cell" onclick="editQty(${f.food_code},${editStartG},this)" title="Click to cap grams">`;
+    if (capG !== undefined) {
+      r += `<strong class="qty-val qty-custom">${gramLabel}</strong>`;
+      r += ` <small style="font-size:.63rem;color:var(--text-light)">≤${capG}g</small>`;
+      r += ` <span style="font-size:.65rem;opacity:.6;cursor:pointer" onclick="event.stopPropagation();clearCustomQty(${f.food_code})" title="Remove cap">✕</span>`;
+    } else {
+      r += `<strong class="qty-val">${gramLabel}</strong>`;
+    }
+    r += `</td>`;
+    r += `<td>${fmtWeight(f.grams)}</td>`;
+    r += `<td>${f.kcal.toFixed(0)}</td>`;
+    r += `<td>${(f.nutrients.protein_g||0).toFixed(1)}g</td>`;
+    r += `<td>$${f.cost.toFixed(2)}</td>`;
+    r += `<td><button class="btn btn-outline-danger btn-sm py-0 px-1" style="font-size:.7rem" onclick="blockFood(${f.food_code},'${descEsc}')" title="Remove">✕</button></td>`;
+    r += `</tr>`;
+    return r;
+  }
+
+  const foodGroups = computeFoodGroups(d.foods);
+  foodGroups.forEach(grp => {
+    if (!grp.merged || grp.foods.length === 1) {
+      h += renderFoodRow(grp.foods[0], false);
+      return;
+    }
+    const rep = grp.foods[0];
+    const totG = grp.foods.reduce((s, f) => s + f.grams, 0);
+    const totKcal = grp.foods.reduce((s, f) => s + f.kcal, 0);
+    const totCost = grp.foods.reduce((s, f) => s + f.cost, 0);
+    const totProt = grp.foods.reduce((s, f) => s + (f.nutrients.protein_g || 0), 0);
+    const isExp = expandedGroups.has(grp.key);
+    const keyEsc = grp.key.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const badge = isExp
+      ? `<span class='tag' style='cursor:pointer;background:var(--forest);color:#fff' onclick="toggleGroup('${keyEsc}')">▲ collapse</span>`
+      : `<span class='tag' style='cursor:pointer;background:var(--forest);color:#fff' onclick="toggleGroup('${keyEsc}')">+${grp.foods.length - 1} similar ▼</span>`;
+    h += `<tr class="food-row" style="background:var(--cream-mid)">`;
+    h += `<td><div class="fw-semibold">${rep.description} ${badge}</div><div class="food-cat-tag">${rep.food_category}</div></td>`;
+    h += `<td><em class="text-muted" style="font-size:.75rem">${grp.foods.length} items</em></td>`;
+    h += `<td>${fmtWeight(totG)}</td>`;
+    h += `<td>${totKcal.toFixed(0)}</td>`;
+    h += `<td>${totProt.toFixed(1)}g</td>`;
+    h += `<td>$${totCost.toFixed(2)}</td>`;
+    h += `<td></td>`;
+    h += `</tr>`;
+    if (isExp) grp.foods.forEach(f => { h += renderFoodRow(f, true); });
+  });
+  h += `</tbody></table></div>`;
+
+  // Nutrient coverage
+  h += `<h6 class="mt-3 mb-1" style="font-size:.82rem;font-family:var(--serif)">Daily Nutrient Coverage (% of DRI, per day avg)</h6>`;
+  h += `<div class="row g-1">`;
+  Object.entries(d.dri_coverage).forEach(([n,pct]) => {
+    if (pct===null) return;
+    const dri = data.dri[n];
+    if (!dri||!dri.min) return;
+    const val = (d.total_nutrients[n]||0).toFixed(1);
+    const cls = pct>=100 ? "fill-good" : pct>=70 ? "fill-warn" : "fill-low";
+    const icon = pct>=100 ? "✓" : pct>=70 ? "~" : "!";
+    h += `<div class="col-md-4 col-sm-6">`;
+    h += `<div class="d-flex justify-content-between" style="font-size:.72rem">`;
+    h += `<span>${dri.label}</span><span class="${cls.replace('fill-','text-')}"><b>${icon}</b> ${val}${dri.unit} (${pct}%)</span></div>`;
+    h += `<div class="nutrient-bar"><div class="nfill ${cls}" style="width:${Math.min(pct,200)/2}%"></div></div></div>`;
+  });
+  h += `</div></div>`;
+
+  document.getElementById("results").innerHTML = h;
+  document.getElementById("results").className = "results-area";
+}
+
+async function optimize() {
+  const btn = document.getElementById("optimizeBtn");
+  const ld  = document.getElementById("loading");
+  btn.disabled=true; ld.style.display="inline-block";
+  const body = {
+    objective:             document.getElementById("objective").value,
+    no_cook:               document.getElementById("optNoCook").checked,
+    shelf_stable:          document.getElementById("optShelfStable").checked,
+    no_chocolate:          document.getElementById("optNoChocolate").checked,
+    candy_boost:           parseFloat(document.getElementById("candySlider").value) || 0,
+    max_item_grams:        getMaxItemGrams(),
+    store:                 document.getElementById("optStore").value,
+    calories_per_day:      parseFloat(document.getElementById("calPerDay").value)||2000,
+    days:                  parseFloat(document.getElementById("daysOfFood").value)||7,
+    weight_kg:             getWeightKg(),
+    diversity:             parseFloat(document.getElementById("diversitySlider").value),
+    nutrition_profile:     currentProfile,
+    nutrient_scales:       getNutrientScales(),
+    blocked_food_ids:      blockedFoods.size > 0 ? [...blockedFoods.keys()] : [],
+    capped_foods:          customQuantities.size > 0 ? Object.fromEntries(customQuantities) : {},
+    dietary_restrictions:  getDietaryRestrictions(),
+  };
+  try {
+    const res  = await fetch(BASE+"api/optimize",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    const data = await res.json();
+    renderResults(data);
+  } catch(e) {
+    document.getElementById("results").innerHTML = `<div class="alert alert-danger">Error: ${e.message}</div>`;
+  } finally { btn.disabled=false; ld.style.display="none"; }
+}
+
+// Load persisted blocked foods
+try {
+  const _saved = localStorage.getItem('wweia_blocked');
+  if (_saved) JSON.parse(_saved).forEach(([code, desc]) => blockedFoods.set(code, desc));
+} catch(e) {}
+
+// Init
+document.getElementById("searchInput").addEventListener("keydown", e => { if(e.key==="Enter") searchFoods(); });
+buildSliders();
+updateDiversityLabel();
+updateCandyLabel();
+
+fetch(BASE+"api/stats").then(r=>r.json()).then(s=>{
+  document.getElementById("statsBar").textContent =
+    `${s.total_foods.toLocaleString()} foods | ${s.no_cook.toLocaleString()} no-cook | `+
+    `${s.shelf_stable.toLocaleString()} shelf-stable | ${s.rural.toLocaleString()} rural`;
+}).catch(()=>{});
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js', {scope: './'})
+      .catch(err => console.warn('SW registration failed:', err));
+  });
+}
+</script>
+</body></html>

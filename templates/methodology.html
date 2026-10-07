@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>About & Methodology — Backpacking Resupply Optimizer</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest:      #2d4a3e;
+  --forest-mid:  #3d6454;
+  --peach:       #e87d5a;
+  --peach-dark:  #c8603e;
+  --cream:       #faf8f4;
+  --cream-mid:   #f3ede3;
+  --border:      #e3d9cc;
+  --text:        #1c1c1c;
+  --text-mid:    #4a4540;
+  --text-light:  #888;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans:  'Inter', -apple-system, sans-serif;
+}
+body { background:var(--cream); font-family:var(--sans); color:var(--text); font-size:.95rem; line-height:1.7; }
+h1,h2,h3 { font-family:var(--serif); }
+h2 { color:var(--forest); margin-top:2rem; border-bottom:2px solid var(--border); padding-bottom:.4rem; }
+h3 { color:var(--forest-mid); margin-top:1.5rem; }
+.hero { background:var(--forest); color:#fff; padding:1.2rem 2rem; }
+.hero small { color:rgba(255,255,255,0.72); }
+.hero a { color:rgba(255,255,255,0.8); text-decoration:none; }
+.hero a:hover { color:#fff; }
+.content { max-width:860px; margin:0 auto; padding:2rem 1.5rem 3rem; }
+code { background:var(--cream-mid); border:1px solid var(--border); border-radius:4px; padding:1px 5px; font-size:.88em; color:var(--peach-dark); }
+.dataset-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:1.25rem 1.5rem; margin-bottom:1rem; }
+.dataset-card h5 { font-family:var(--serif); color:var(--forest); margin-bottom:.3rem; }
+.dataset-card a { color:var(--peach-dark); }
+footer { text-align:center; padding:1.5rem; font-size:.8rem; color:var(--text-light); border-top:1px solid var(--border); }
+footer a { color:var(--peach-dark); text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col">
+        <h4 class="mb-0">Backpacking Resupply Optimizer</h4>
+        <small>About &amp; Methodology</small>
+      </div>
+      <div class="col-auto">
+        <a href="./">&larr; Back to Optimizer</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <h2>What This Tool Does</h2>
+  <p>
+    The Backpacking Resupply Optimizer helps backpackers plan lightweight, nutritionally complete food resupply boxes.
+    Given your trip duration, calorie target, and store type, it selects a basket of shelf-stable, no-cook foods
+    that minimizes total pack weight while meeting dietary reference intake targets — the same trade-off you face
+    when deciding whether to carry almonds or instant mashed potatoes.
+  </p>
+
+  <h2>Datasets</h2>
+
+  <div class="dataset-card">
+    <h5>NHANES / WWEIA — What We Eat in America</h5>
+    <p class="mb-1">
+      The primary source of food composition data. WWEIA is the dietary recall component of the
+      National Health and Nutrition Examination Survey (NHANES), conducted by the USDA and CDC.
+      Each food is assigned an 8-digit FNDDS food code with per-100g nutrient values for ~30 nutrients.
+    </p>
+    <p class="mb-0">
+      <strong>Cycles used:</strong> August 2021 – August 2023 &nbsp;
+      <a href="https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/food-surveys-research-group/docs/fndds-download-databases/" target="_blank" rel="noopener">↗ FNDDS databases</a>
+    </p>
+  </div>
+
+  <div class="dataset-card">
+    <h5>USDA FoodAPS — National Household Food Acquisition and Purchase Survey</h5>
+    <p class="mb-1">
+      FoodAPS links actual grocery purchases to FNDDS food codes, providing real-world price data,
+      package sizes, store type flags (grocery, rural, convenience store), and item descriptions
+      from store receipts. This is the source of the "estimated price" values shown in the optimizer.
+    </p>
+    <p class="mb-0">
+      <strong>Coverage:</strong> ~4,400 foods with observed purchase prices &nbsp;
+      <a href="https://www.ers.usda.gov/foodaps" target="_blank" rel="noopener">↗ USDA ERS FoodAPS</a>
+    </p>
+  </div>
+
+  <div class="dataset-card">
+    <h5>FNDDS At-a-Glance — Additional Food Descriptions</h5>
+    <p class="mb-1">
+      The 2019–2020 FNDDS "At a Glance" spreadsheet provides secondary food descriptions — brand names,
+      common aliases, and product names — for each food code. These are shown as the gray subtitle text
+      under each food name (e.g. "Girl Scout Tagalong; Little Debbie Nutty Bar").
+    </p>
+    <p class="mb-0">
+      <a href="https://www.ars.usda.gov/ARSUserFiles/80400530/apps/2019-2020%20FNDDS%20At%20A%20Glance%20-%20Foods%20and%20Beverages.xlsx" target="_blank" rel="noopener">↗ FNDDS At-a-Glance (XLSX)</a>
+    </p>
+  </div>
+
+  <div class="dataset-card">
+    <h5>Perishability Data — Days Without Refrigeration</h5>
+    <p class="mb-1">
+      A custom-built lookup table mapping each WWEIA food category to the number of days it can safely
+      be carried without refrigeration. Shelf-stable categories (nuts, dried fruit, crackers) get 14+
+      days; perishable fresh foods get 0 days. When you set the "Days of Food" parameter, the optimizer
+      automatically excludes foods that would spoil before the end of your trip.
+    </p>
+    <p class="mb-0">Source: <code>WWEIA_Days_Without_Refrigeration.csv</code> (custom, based on USDA food safety guidelines)</p>
+  </div>
+
+  <h2>Optimization Model</h2>
+
+  <h3>Decision Variables</h3>
+  <p>
+    For each candidate food <em>i</em>, the model has two variables:
+  </p>
+  <ul>
+    <li><code>g_i ≥ 0</code> — grams of food <em>i</em> to pack</li>
+    <li><code>y_i ∈ {0, 1}</code> — binary indicator: 1 if food <em>i</em> is selected at all (used when food diversity is &gt; 0)</li>
+  </ul>
+  <p>
+    When diversity is zero, only continuous <code>g_i</code> variables are used and the problem is solved as
+    a linear program (LP) with GLOP. When diversity &gt; 0, binary variables are added and the problem
+    becomes a mixed-integer program (MIP) solved with SCIP. Both solvers are from
+    <a href="https://developers.google.com/optimization" target="_blank" rel="noopener">Google OR-Tools</a>.
+  </p>
+
+  <h3>Objective Function</h3>
+  <p>The default objective is <strong>maximum calorie density</strong> — equivalently, minimum total weight for a fixed calorie target:</p>
+  <p><code>minimize &nbsp; Σ g_i</code></p>
+  <p>
+    Carrying fewer grams to hit the same calorie goal means a lighter pack.
+    Because calorie density varies by food (nuts ~7 kcal/g, dried fruit ~3 kcal/g, instant meals ~4 kcal/g),
+    the optimizer gravitates toward calorie-dense foods unless constrained by nutrition or diversity.
+  </p>
+  <p>Other available objectives:</p>
+  <ul>
+    <li><strong>Lowest Cost</strong> — minimize <code>Σ price_i × g_i / 100</code></li>
+    <li><strong>Most Diverse</strong> — maximize a category-spread score</li>
+    <li><strong>Max Protein / Fiber / Vitamin C / Iron / Vitamin D</strong> — maximize that nutrient per gram</li>
+  </ul>
+
+  <h3>Constraints</h3>
+  <ul>
+    <li>
+      <strong>Calorie target:</strong> total calories must fall within ±3% of <code>calories_per_day × days</code>
+    </li>
+    <li>
+      <strong>Nutrient minimums</strong> (optional, from DRI): for each nutrient with a non-zero scale,
+      <code>Σ (nutrient_i / 100) × g_i ≥ DRI_min × scale</code>.
+      If a nutrient is physically unachievable from the available food set, the constraint is automatically relaxed
+      and a warning is shown.
+    </li>
+    <li>
+      <strong>Nutrient maximums</strong>: upper bounds from the Dietary Reference Intakes (e.g. max iron 45mg/day)
+      are enforced to prevent unsafe megadosing.
+    </li>
+    <li>
+      <strong>Per-food cap:</strong> no single food may contribute more than a fraction of total calories
+      (40% at diversity=0, relaxing toward 100% at diversity=1 to give the minimum-foods constraint room to work).
+    </li>
+    <li>
+      <strong>Category calorie cap:</strong> when diversity &gt; 0, no food category (e.g. Nuts &amp; Seeds)
+      may supply more than <code>(1 − 0.55×diversity)</code> of total calories.
+    </li>
+    <li>
+      <strong>Minimum distinct foods</strong> (MIP only): <code>Σ y_i ≥ min_foods</code>, where
+      <code>min_foods = round(diversity × 20)</code>, capped at the candidate set size.
+      Each selected food must also contribute at least ~50 kcal (enforced via
+      <code>g_i ≥ min_serving × y_i</code>) so the binary variables correspond to meaningful portions.
+    </li>
+    <li>
+      <strong>Perishability filter:</strong> foods with <code>days_without_refrigeration &lt; trip_days</code>
+      are excluded from the candidate set entirely.
+    </li>
+  </ul>
+
+  <h3>Dietary Reference Intakes (DRI)</h3>
+  <p>
+    Nutrient minimums are scaled from DRI values computed for a 70 kg adult per day × number of trip days.
+    The "Nutrition Profile" setting applies a multiplier to each nutrient's minimum:
+  </p>
+  <ul>
+    <li><strong>Optimal</strong> — full DRI for protein, fiber, calcium, iron, vitamin C, vitamin D; 75% for potassium, B12, zinc, magnesium, folate; 50% for choline</li>
+    <li><strong>Reduced</strong> — 25–50% of DRI for most nutrients; zero for zinc, magnesium, folate, choline</li>
+    <li><strong>None</strong> — no nutrient constraints applied</li>
+    <li><strong>Custom</strong> — per-nutrient sliders</li>
+  </ul>
+
+  <h2>Prices</h2>
+  <p>
+    All prices are <strong>estimates</strong> derived from FoodAPS purchase observations, adjusted
+    to 2025 dollars using category-specific food CPI series from the BLS (Consumer Price Index,
+    U.S. City Average, All Urban Consumers). The median observed price per 100g is multiplied by
+    a category-specific inflation factor; a fallback of $0.50/100g × 1.45 (overall food-at-home
+    inflation) is applied where no observed price exists.
+    <br><br>
+    Inflation multipliers by food category (2013 average to December 2025):
+    <ul style="margin-top:.5rem">
+      <li>Cereals &amp; Grains, Bars &amp; Snacks: <strong>×1.35</strong> (CUUR0000SAF11)</li>
+      <li>Dairy &amp; Cheese: <strong>×1.39</strong> (CUUR0000SAF114)</li>
+      <li>Meat, Poultry, Seafood: <strong>×1.23</strong> (CUUR0000SAF113)</li>
+      <li>Fruits, Vegetables, Dried Fruit: <strong>×1.27</strong> (CUUR0000SAF116)</li>
+      <li>Nuts, Oils, Condiments, Beverages, Sweets: <strong>×1.24</strong> (CUUR0000SEFJ)</li>
+      <li>All other / fallback: <strong>×1.45</strong> (CUUR0000SAF1)</li>
+    </ul>
+    These multipliers are recomputed each time <code>inflate_prices.py</code> is run against the
+    live BLS public API.
+  </p>
+
+  <h2>Limitations</h2>
+  <ul>
+    <li>FoodAPS prices are from 2012–2013 and are inflation-adjusted to 2025 dollars using BLS food CPI series, but category-level indices may not capture variation within a category (e.g. organic vs. conventional).</li>
+    <li>Only ~1,260 of 4,400 foods have observed purchase prices; the rest use the $0.50/100g fallback.</li>
+    <li>Package sizes are derived from typical FoodAPS purchase quantities and are approximate.</li>
+    <li>The perishability lookup is a conservative estimate based on food category, not specific products.</li>
+    <li>Nutrient values are per-100g averages across food preparations and may not reflect the specific product you buy.</li>
+  </ul>
+
+</div>
+
+<footer>
+  <a href="./">← Back to Optimizer</a>
+  &nbsp;&bull;&nbsp;
+  <a href="https://trailpeaches.com" target="_blank" rel="noopener">Trail Peaches</a>
+  &nbsp;&bull;&nbsp;
+  Data: NHANES/WWEIA &amp; USDA FoodAPS
+</footer>
+</body>
+</html>

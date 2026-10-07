@@ -1,0 +1,173 @@
+category_number,category_description,stability_tier,days_without_refrigeration,trail_notes
+1002,"Milk, whole",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1004,"Milk, reduced fat",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1006,"Milk, lowfat",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1008,"Milk, nonfat",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1202,"Flavored milk, whole",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1204,"Flavored milk, reduced fat",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1206,"Flavored milk, lowfat",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1208,"Flavored milk, nonfat",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1402,Milk shakes and other dairy drinks,Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1602,Cheese,Shelf Stable (Hard types),14+ days,"Hard/aged cheeses (cheddar, parmesan) lose oil but remain safe for weeks."
+1604,Cottage/ricotta cheese,Perishable,0 days,High moisture soft cheese; spoils within hours.
+1820,"Yogurt, regular",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1822,"Yogurt, Greek",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1902,Plant-based milk,Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+1904,Plant-based yogurt,Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+2002,"Beef, excludes ground",Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2004,Ground beef,Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2006,Pork,Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2008,"Lamb, goat, game",Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2010,Liver and organ meats,Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2202,"Chicken, whole pieces",Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2204,"Chicken patties, nuggets and tenders",Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2206,"Turkey, duck, other poultry",Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2402,Fish,Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2404,Shellfish,Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2502,Eggs and omelets,Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+2602,Cold cuts and cured meats,Shelf Stable (Cured),7-14 days,"Hard salami, pepperoni, and cured meats are salted/dried; highly stable."
+2604,Bacon,Perishable / Short-term,1-2 days,Fresh sausages and hot dogs require refrigeration shortly after ambient exposure.
+2606,Frankfurters,Perishable / Short-term,1-2 days,Fresh sausages and hot dogs require refrigeration shortly after ambient exposure.
+2608,Sausages,Perishable / Short-term,1-2 days,Fresh sausages and hot dogs require refrigeration shortly after ambient exposure.
+2802,"Beans, peas, legumes",Context Dependent,Varies,General category requires inspecting specific item attributes.
+2804,Nuts and seeds,Context Dependent,Varies,General category requires inspecting specific item attributes.
+2806,Soy and meat-alternative products,Perishable,0 days,"Tofu, plant milks, and fresh alternatives lack preservation barriers."
+3002,Meat mixed dishes,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3004,Poultry mixed dishes,Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+3006,Seafood mixed dishes,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3102,"Bean, pea, legume dishes",Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3104,Vegetable dishes,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3202,Rice mixed dishes,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3204,"Pasta mixed dishes, excludes macaroni and cheese",Shelf Stable (Hard types),14+ days,"Hard/aged cheeses (cheddar, parmesan) lose oil but remain safe for weeks."
+3206,Macaroni and cheese,Shelf Stable (Hard types),14+ days,"Hard/aged cheeses (cheddar, parmesan) lose oil but remain safe for weeks."
+3208,Turnovers and other grain-based items,Context Dependent,Varies,General category requires inspecting specific item attributes.
+3402,Fried rice and lo/chow mein,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3404,Stir-fry and soy-based sauce mixtures,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3406,"Egg rolls, dumplings, sushi",Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3502,Burritos and tacos,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3504,Nachos,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3506,Other Mexican mixed dishes,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3602,Pizza,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3702,Burgers,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3703,Frankfurter sandwiches,Perishable / Short-term,1-2 days,Fresh sausages and hot dogs require refrigeration shortly after ambient exposure.
+3704,Chicken fillet sandwiches,Perishable,0 days,Raw or fresh animal protein; severe food safety risk without refrigeration.
+3706,Egg/breakfast sandwiches,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3720,Cheese sandwiches,Shelf Stable (Hard types),14+ days,"Hard/aged cheeses (cheddar, parmesan) lose oil but remain safe for weeks."
+3722,Peanut butter and jelly sandwiches,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3730,Seafood sandwiches,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3740,Deli and cured meat sandwiches,Perishable / Short-term,1-2 days,Fresh sausages and hot dogs require refrigeration shortly after ambient exposure.
+3742,Meat and BBQ sandwiches,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3744,Vegetable sandwiches/burgers,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3804,"Soups, broth-based",Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3806,"Soups, cream-based",Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+3808,Ramen and Asian broth-based soups,Perishable (Once Prepared),0-1 day,Cooked foods and assembled sandwiches spoil quickly due to combined moisture and neutral pH.
+4002,Rice,Shelf Stable,14+ days,Dry grains and pastas have very low water activity.
+4004,"Pasta, noodles, cooked grains",Shelf Stable,14+ days,Dry grains and pastas have very low water activity.
+4202,Yeast breads,Short-term Stable,3-5 days,"Safe initially, but highly prone to mold growth in enclosed backpacks after a few days."
+4204,Rolls and buns,Short-term Stable,3-5 days,"Safe initially, but highly prone to mold growth in enclosed backpacks after a few days."
+4206,Bagels and English muffins,Short-term Stable,3-5 days,"Safe initially, but highly prone to mold growth in enclosed backpacks after a few days."
+4208,Tortillas,Short-term Stable,3-5 days,"Safe initially, but highly prone to mold growth in enclosed backpacks after a few days."
+4402,"Biscuits, muffins, quick breads",Short-term Stable,3-5 days,"Safe initially, but highly prone to mold growth in enclosed backpacks after a few days."
+4404,"Pancakes, waffles, French toast",Short-term Stable,2-3 days,Prone to mold and staling rapidly.
+4602,"Ready-to-eat cereal, higher sugar (>21.2g/100g)",Shelf Stable,14+ days,Dry grains and pastas have very low water activity.
+4604,"Ready-to-eat cereal, lower sugar (=<21.2g/100g)",Shelf Stable,14+ days,Dry grains and pastas have very low water activity.
+4802,Oatmeal,Shelf Stable,14+ days,Dry grains and pastas have very low water activity.
+4804,Grits and other cooked cereals,Shelf Stable,14+ days,Dry grains and pastas have very low water activity.
+5002,Potato chips,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5004,"Tortilla, corn, other chips",Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5006,Popcorn,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5008,Pretzels/snack mix,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5202,"Crackers, excludes saltines",Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5204,Saltine crackers,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5402,Cereal bars,Shelf Stable,14+ days,Dry grains and pastas have very low water activity.
+5404,Nutrition bars,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5502,Cakes and pies,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5504,Cookies and brownies,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5506,"Doughnuts, sweet rolls, pastries",Short-term Stable,3-5 days,"Safe initially, but highly prone to mold growth in enclosed backpacks after a few days."
+5702,Candy containing chocolate,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5704,Candy not containing chocolate,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+5802,Ice cream and frozen dairy desserts,Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+5804,Pudding,Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+5806,"Gelatins, ices, sorbets",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+6002,Apples,Moderately Stable,4-7 days,Sturdy skins protect them; withstand a few days in a pack.
+6004,Bananas,Perishable / Soft,2-3 days,Softer fruits bruise and over-ripen rapidly in warm trail conditions.
+6006,Grapes,Perishable,1-2 days,High moisture and delicate structure; bruise and rot extremely fast.
+6008,Peaches and nectarines,Perishable / Soft,2-3 days,Softer fruits bruise and over-ripen rapidly in warm trail conditions.
+6009,Strawberries,Perishable,1-2 days,High moisture and delicate structure; bruise and rot extremely fast.
+6011,Blueberries and other berries,Perishable,1-2 days,High moisture and delicate structure; bruise and rot extremely fast.
+6012,Citrus fruits,Moderately Stable,4-7 days,Sturdy skins protect them; withstand a few days in a pack.
+6014,Melons,Perishable,1-2 days,High moisture and delicate structure; bruise and rot extremely fast.
+6016,Dried fruits,Shelf Stable,14+ days,Dehydrated fruit; excellent long-term trail fuel.
+6018,Other fruits and fruit salads,Context Dependent,Varies,General category requires inspecting specific item attributes.
+6020,Pears,Perishable / Soft,2-3 days,Softer fruits bruise and over-ripen rapidly in warm trail conditions.
+6022,Pineapple,Perishable / Soft,2-3 days,Softer fruits bruise and over-ripen rapidly in warm trail conditions.
+6024,Mango and papaya,Perishable / Soft,2-3 days,Softer fruits bruise and over-ripen rapidly in warm trail conditions.
+6402,Tomatoes,Perishable,1-2 days,"Leafy greens and high-moisture vegetables wilt, bruise, and spoil rapidly."
+6404,Carrots,Shelf Stable (Dense),7-14+ days,"Dense, low-moisture root and cruciferous veggies withstand trail conditions well."
+6406,Other red and orange vegetables,Context Dependent,Varies,General category requires inspecting specific item attributes.
+6407,Broccoli,Perishable,1-2 days,"Leafy greens and high-moisture vegetables wilt, bruise, and spoil rapidly."
+6409,Spinach,Perishable,1-2 days,"Leafy greens and high-moisture vegetables wilt, bruise, and spoil rapidly."
+6410,Lettuce and lettuce salads,Perishable,1-2 days,"Leafy greens and high-moisture vegetables wilt, bruise, and spoil rapidly."
+6411,Other dark green vegetables,Context Dependent,Varies,General category requires inspecting specific item attributes.
+6412,String beans,Perishable,1-2 days,"Leafy greens and high-moisture vegetables wilt, bruise, and spoil rapidly."
+6413,Cabbage,Shelf Stable (Dense),7-14+ days,"Dense, low-moisture root and cruciferous veggies withstand trail conditions well."
+6414,Onions,Shelf Stable (Dense),7-14+ days,"Dense, low-moisture root and cruciferous veggies withstand trail conditions well."
+6416,Corn,Perishable,1-2 days,"Leafy greens and high-moisture vegetables wilt, bruise, and spoil rapidly."
+6418,Other starchy vegetables,Context Dependent,Varies,General category requires inspecting specific item attributes.
+6420,Other vegetables and combinations,Context Dependent,Varies,General category requires inspecting specific item attributes.
+6430,Fried vegetables,Context Dependent,Varies,General category requires inspecting specific item attributes.
+6432,"Coleslaw, non-lettuce salads",Perishable,1-2 days,"Leafy greens and high-moisture vegetables wilt, bruise, and spoil rapidly."
+6489,Vegetables on a sandwich,Context Dependent,Varies,General category requires inspecting specific item attributes.
+6802,"White potatoes, baked or boiled",Shelf Stable (Dense),7-14+ days,"Dense, low-moisture root and cruciferous veggies withstand trail conditions well."
+6804,French fries and other fried white potatoes,Shelf Stable (Dense),7-14+ days,"Dense, low-moisture root and cruciferous veggies withstand trail conditions well."
+6806,Mashed potatoes and white potato mixtures,Shelf Stable (Dense),7-14+ days,"Dense, low-moisture root and cruciferous veggies withstand trail conditions well."
+7002,Citrus juice,Moderately Stable,4-7 days,Sturdy skins protect them; withstand a few days in a pack.
+7004,Apple juice,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7006,Other fruit juice,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7008,Vegetable juice,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7102,Diet soft drinks,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7104,Diet sport and energy drinks,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7106,Other diet drinks,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7202,Soft drinks,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7204,Fruit drinks,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7206,Sport and energy drinks,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7208,Nutritional beverages,Context Dependent,Varies,General category requires inspecting specific item attributes.
+7220,Smoothies and grain drinks,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7302,Coffee,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7304,Tea,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7502,Beer,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7504,Wine,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7506,Liquor and cocktails,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7702,Tap water,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7704,Bottled water,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7802,Flavored or carbonated water,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+7804,Enhanced water,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+8002,Butter and animal fats,Shelf Stable,5-10 days,High fat content allows butter to sit out for over a week (gets soft).
+8004,Margarine,Shelf Stable,7-14+ days,Oils and stable condiments.
+8006,"Cream cheese, sour cream, whipped cream",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+8008,Cream and cream substitutes,Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+8010,Mayonnaise,Perishable (Once Open),1-2 days,"Commercial mayo is acidic, but home/opened jars spoil quickly in heat."
+8012,Salad dressings and vegetable oils,Shelf Stable,7-14+ days,Oils and stable condiments.
+8402,Tomato-based condiments,Shelf Stable,7-14+ days,"High acid, high salt, or vinegar base provides strong preservation."
+8404,Soy-based condiments,Shelf Stable,7-14+ days,Oils and stable condiments.
+8406,Mustard and other condiments,Shelf Stable,7-14+ days,"High acid, high salt, or vinegar base provides strong preservation."
+8408,"Olives, pickles, pickled vegetables",Shelf Stable,7-14+ days,"High acid, high salt, or vinegar base provides strong preservation."
+8410,"Pasta sauces, tomato-based",Shelf Stable,14+ days,Dry grains and pastas have very low water activity.
+8412,"Dips, gravies, other sauces",Shelf Stable,7-14+ days,Oils and stable condiments.
+8802,Sugars and honey,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+8804,Sugar substitutes,Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+8806,"Jams, syrups, toppings",Shelf Stable,14+ days,"Low moisture, high sugar, or high salt content prevents microbial growth."
+9002,Baby food: cereals,Shelf Stable,14+ days,Dry grains and pastas have very low water activity.
+9004,Baby food: fruit,Perishable / Unopened OK,0 days (opened),"Sealed jars are shelf-stable, but once opened or if meat-based, highly perishable."
+9006,Baby food: vegetables,Perishable / Unopened OK,0 days (opened),"Sealed jars are shelf-stable, but once opened or if meat-based, highly perishable."
+9007,Baby food: mixtures,Perishable / Unopened OK,0 days (opened),"Sealed jars are shelf-stable, but once opened or if meat-based, highly perishable."
+9008,Baby food: meat and dinners,Perishable / Unopened OK,0 days (opened),"Sealed jars are shelf-stable, but once opened or if meat-based, highly perishable."
+9010,Baby food: yogurt,Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+9012,Baby food: snacks and sweets,Perishable / Unopened OK,0 days (opened),"Sealed jars are shelf-stable, but once opened or if meat-based, highly perishable."
+9202,Baby juice,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+9204,Baby water,Shelf Stable (Sealed),14+ days,Sealed commercial beverages are stable until opened.
+9402,"Formula, ready-to-feed",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+9404,"Formula, prepared from powder",Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+9602,Human milk,Perishable,0 days,High moisture dairy; spoils rapidly at ambient temperature.
+9802,Protein and nutritional powders,Shelf Stable,14+ days,Dehydrated powder format; highly stable.
+9999,Not included in a food category,Context Dependent,Varies,General category requires inspecting specific item attributes.
